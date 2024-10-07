@@ -12,13 +12,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Widget> _widgets = [
-    Tiles(),
-  ];
+  List<TaskData> _tasks = [];
 
   void _addWidgets() {
     setState(() {
-      _widgets.add(Tiles());
+      _tasks.add(TaskData(
+          hideDeleteButton: true)); // Add a new task with delete button hidden
+    });
+  }
+
+  void _hideDeleteButtonsForAllTasks() {
+    setState(() {
+      for (var task in _tasks) {
+        task.hideDeleteButton = true; // Hide delete button for each task
+      }
     });
   }
 
@@ -30,16 +37,36 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text("TO DO APP"),
       ),
-      body: Column(children: [
-        Expanded(
-          child: ListView.builder(
-              itemCount: _widgets.length,
-              itemBuilder: (context, index) {
-                return _widgets[index];
-              }),
-        ),
-        AddButton(onPressed: () => _addWidgets()),
-      ]),
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          setState(() {
+            _hideDeleteButtonsForAllTasks();
+          });
+        },
+        child: Column(children: [
+          Expanded(
+            child: ListView.builder(
+                itemCount: _tasks.length,
+                itemBuilder: (context, index) {
+                  return Tiles(
+                      hideDeleteButton: _tasks[index].hideDeleteButton,
+                      onLongPress: () {
+                        setState(() {
+                          _tasks[index].hideDeleteButton =
+                              false; // Show delete button on long press
+                        });
+                      });
+                }),
+          ),
+          AddButton(onPressed: () => _addWidgets()),
+        ]),
+      ),
     );
   }
+}
+
+class TaskData {
+  bool hideDeleteButton;
+  TaskData({required this.hideDeleteButton});
 }
