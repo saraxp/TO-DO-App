@@ -37,6 +37,36 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text("TO DO APP"),
       ),
+      endDrawer: Drawer(
+        child: Column(
+          children: [
+            ExpansionTile(
+              leading: Icon(Icons.check_circle_outline),
+              title: Text('Completed Tasks'),
+            ),
+            ExpansionTile(
+              leading: Icon(Icons.delete_outline),
+              title: Text('Deleted Tasks'),
+            ),
+            Spacer(),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {
+                // Handle settings navigation
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.account_circle_outlined),
+              title: Text('Account'),
+              onTap: () {
+                // Handle account navigation
+              },
+            ),
+          ],
+        ),
+      ),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
