@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields
 
 import 'package:flutter/material.dart';
-import 'package:to_do_app/pages/add_button.dart';
 import 'package:to_do_app/pages/tiles_page.dart';
+import 'package:to_do_app/pages/add_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,18 +14,60 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<TaskData> _tasks = [];
 
+  // Add a new task
   void _addWidgets() {
     setState(() {
       _tasks.add(TaskData(
-          hideDeleteButton: true)); // Add a new task with delete button hidden
+        taskText: '',
+        isEditing: true,
+        hideDeleteButton: true,
+      ));
     });
   }
 
+  // Hide delete buttons for all tasks
   void _hideDeleteButtonsForAllTasks() {
     setState(() {
       for (var task in _tasks) {
-        task.hideDeleteButton = true; // Hide delete button for each task
+        task.hideDeleteButton = true; // Hide delete button
+        task.isEditing = false; // Exit edit mode
       }
+    });
+  }
+
+  // Update the text of a task
+  void _updateTaskText(int index, String newText) {
+    setState(() {
+      _tasks[index].taskText = newText;
+    });
+  }
+
+  // Toggle edit mode for a task
+  void _toggleEditing(int index, bool isEditing) {
+    setState(() {
+      for (int i = 0; i < _tasks.length; i++) {
+        _tasks[i].isEditing = false; // Ensure only one tile is in edit mode
+      }
+      _tasks[index].isEditing = isEditing;
+    });
+  }
+
+  // Delete a task
+  void _deleteTask(int index) {
+    setState(() {
+      _tasks.removeAt(index);
+    });
+  }
+
+  // Reload the app's content
+  Future<void> _reloadContent() async {
+    // Simulate a refresh operation (e.g., fetching updated tasks)
+    await Future.delayed(Duration(seconds: 1)); // Simulate a network call
+
+    // Here you can reset the task list or update it
+    setState(() {
+      _tasks = []; // For demonstration, clearing the task list
+      _addWidgets(); // Add one default task to show reloading worked
     });
   }
 
@@ -37,66 +79,51 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text("TO DO APP"),
       ),
-      endDrawer: Drawer(
-        child: Column(
-          children: [
-            ExpansionTile(
-              leading: Icon(Icons.check_circle_outline),
-              title: Text('Completed Tasks'),
-            ),
-            ExpansionTile(
-              leading: Icon(Icons.delete_outline),
-              title: Text('Deleted Tasks'),
-            ),
-            Spacer(),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-              onTap: () {
-                // Handle settings navigation
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.account_circle_outlined),
-              title: Text('Account'),
-              onTap: () {
-                // Handle account navigation
-              },
-            ),
-          ],
-        ),
-      ),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () {
-          setState(() {
-            _hideDeleteButtonsForAllTasks();
-          });
-        },
-        child: Column(children: [
-          Expanded(
-            child: ListView.builder(
-                itemCount: _tasks.length,
-                itemBuilder: (context, index) {
-                  return Tiles(
+        onTap: _hideDeleteButtonsForAllTasks, // Hide delete buttons when tapping outside
+        child: RefreshIndicator(
+          onRefresh: _reloadContent, // Pull-to-refresh callback
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _tasks.length,
+                  itemBuilder: (context, index) {
+                    return Tiles(
+                      taskText: _tasks[index].taskText,
+                      isEditing: _tasks[index].isEditing,
                       hideDeleteButton: _tasks[index].hideDeleteButton,
                       onLongPress: () {
                         setState(() {
-                          _tasks[index].hideDeleteButton =
-                              false; // Show delete button on long press
+                          _tasks[index].hideDeleteButton = false; // Show delete button
                         });
-                      });
-                }),
+                      },
+                      onDelete: () => _deleteTask(index),
+                      onTextChanged: (newText) => _updateTaskText(index, newText),
+                      onToggleEditing: (isEditing) =>
+                          _toggleEditing(index, isEditing),
+                    );
+                  },
+                ),
+              ),
+              AddButton(onPressed: _addWidgets), // Use the AddButton widget here
+            ],
           ),
-          AddButton(onPressed: () => _addWidgets()),
-        ]),
+        ),
       ),
     );
   }
 }
 
 class TaskData {
+  String taskText;
+  bool isEditing;
   bool hideDeleteButton;
-  TaskData({required this.hideDeleteButton});
+
+  TaskData({
+    required this.taskText,
+    required this.isEditing,
+    required this.hideDeleteButton,
+  });
 }
