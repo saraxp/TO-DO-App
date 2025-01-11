@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do_app/pages/tiles_page.dart';
 import 'package:to_do_app/pages/add_button.dart';
 import 'package:to_do_app/pages/task_data.dart';
 import 'package:to_do_app/pages/completed_tasks.dart';
 import 'package:to_do_app/pages/deleted_tasks.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +20,12 @@ class _HomePageState extends State<HomePage> {
   List<TaskData> _tasks = [];
   List<TaskData> _completedTasks = [];
   List<TaskData> _deletedTasks = [];
+  String _title = '';
+  final TextEditingController _titleController =
+  TextEditingController(); // Controller for the title input
+  final GlobalKey<ScaffoldState> _scaffoldKey =
+  GlobalKey<ScaffoldState>(); // Key for controlling the Scaffold
+
 
   // Add a new task
   void _addWidgets() {
@@ -52,12 +59,10 @@ class _HomePageState extends State<HomePage> {
   // Mark task as completed
   void _markTaskAsCompleted(int index) {
     setState(() {
-      // Mark the task as completed visually
       _tasks[index].isEditing = false;
       _tasks[index].hideDeleteButton = true;
     });
 
-    // Delay the removal to ensure the UI updates before the task vanishes
     Future.delayed(Duration(milliseconds: 500), () {
       setState(() {
         final completedTask = _tasks[index];
@@ -80,9 +85,9 @@ class _HomePageState extends State<HomePage> {
   // Delete a task
   void _deleteTask(int index) {
     setState(() {
-      final deletedTask = _tasks[index]; // Get the task directly
-      _tasks.removeAt(index); // Remove it from the list
-      _deletedTasks.add(deletedTask); // Add it to deleted tasks
+      final deletedTask = _tasks[index];
+      _tasks.removeAt(index);
+      _deletedTasks.add(deletedTask);
     });
   }
 
@@ -91,96 +96,184 @@ class _HomePageState extends State<HomePage> {
       for (var task in tasksToRestore) {
         task.isChecked = false; // Unmark as completed
       }
-      _tasks.addAll(tasksToRestore); // Add tasks back to the main list
-      _completedTasks.removeWhere((task) => tasksToRestore.contains(task)); // Remove from completed tasks
+      _tasks.addAll(tasksToRestore);
+      _completedTasks.removeWhere((task) => tasksToRestore.contains(task));
     });
   }
 
-
   // Reload the app's content
   Future<void> _reloadContent() async {
-    // Simulate a refresh operation (e.g., fetching updated tasks)
-    await Future.delayed(Duration(seconds: 1)); // Simulate a network call
-
-    // Here you can reset the task list or update it
+    await Future.delayed(Duration(seconds: 1));
     setState(() {
-      _tasks = []; // For demonstration, clearing the task list
-      _addWidgets(); // Add one default task to show reloading worked
+      _tasks.clear();
+      _title = '';
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue[100],
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text("TO DO APP"),
-      ),
+      key: _scaffoldKey, // Assign the key to the Scaffold
+      backgroundColor: Color(0xFFDDF2FD),
       endDrawer: Drawer(
-        child: Column(
-          children: [
-            Spacer(),
-            ListTile(
-              leading: Icon(Icons.check_circle_outline),
-              title: Text('Completed Tasks'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CompletedTasksPage(
-                      completedTasks: _completedTasks,
-                      onRestoreTasks: _restoreTasksFromCompleted, // Pass the callback here
+        backgroundColor: Color(0xFF000033),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 520.0),
+          child: Column(
+            children: [
+              ListTile(
+                leading: SvgPicture.asset(
+                  'lib/icons/list2.svg',
+                  colorFilter: ColorFilter.mode(Color(0xFFFBFAF5), BlendMode.srcIn),
+                ),
+                title: Text(
+                  'Completed Tasks',
+                  style: TextStyle(color: Color(0xFFFBFAF5)),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CompletedTasksPage(
+                        completedTasks: _completedTasks,
+                        onRestoreTasks: _restoreTasksFromCompleted,
+                      ),
                     ),
+                  );
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: ListTile(
+                  leading: SvgPicture.asset(
+                  'lib/icons/delete2.svg',
+                  colorFilter: ColorFilter.mode(Color(0xFFFBFAF5), BlendMode.srcIn),
                   ),
-                );
-
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.delete_outline),
-              title: Text('Deleted Tasks'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DeletedTasksPage(
-                      deletedTasks: _deletedTasks,
-                      onRestoreTasks: (List<TaskData> tasksToRestore) {
-                        setState(() {
-                          for (var task in tasksToRestore) {
-                            task.isChecked = false; // Ensure the task is not marked as completed
-                            task.hideDeleteButton = true; //Ensure that delete button is hidden
-                          }
-                          _tasks.addAll(tasksToRestore); // Add restored tasks to the main list
-                          _deletedTasks.removeWhere((task) => tasksToRestore.contains(task)); // Remove them from deleted tasks
-                        });
-                      },
-                    ),
+                  title: Text(
+                    'Deleted Tasks',
+                    style: TextStyle(color: Color(0xFFFBFAF5)),
                   ),
-                );
-              },
-            ),
-            Spacer(),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-            ),
-            ListTile(
-            leading: Icon(Icons.account_circle_outlined),
-            title: Text('Account'),
-            ),
-          ],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DeletedTasksPage(
+                          deletedTasks: _deletedTasks,
+                          onRestoreTasks: (List<TaskData> tasksToRestore) {
+                            setState(() {
+                              for (var task in tasksToRestore) {
+                                task.isChecked = false;
+                                task.hideDeleteButton = true;
+                              }
+                              _tasks.addAll(tasksToRestore);
+                              _deletedTasks.removeWhere(
+                                      (task) => tasksToRestore.contains(task));
+                            });
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top:10.0, bottom: 10.0),
+                child: ListTile(
+                  leading: SvgPicture.asset(
+                      'lib/icons/theme.svg',
+                          colorFilter: ColorFilter.mode(Color(0xFFFBFAF5), BlendMode.srcIn),
+                  ),
+                  title: Text(
+                    'Themes',
+                    style: TextStyle(color: Color(0xFFFBFAF5)),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 10.0),
+                child: Divider(thickness: 1, color: Color(0xFFFBFAF5),),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: ListTile(
+                  leading: SvgPicture.asset(
+                    'lib/icons/settings.svg',
+                    colorFilter: ColorFilter.mode(Color(0xFFFBFAF5), BlendMode.srcIn),
+                  ),
+                  title: Text(
+                    'Settings',
+                    style: TextStyle(color: Color(0xFFFBFAF5)),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: SvgPicture.asset(
+                  'lib/icons/account.svg',
+                  colorFilter: ColorFilter.mode(Color(0xFFFBFAF5), BlendMode.srcIn),
+                ),
+                title: Text(
+                  'Account',
+                  style: TextStyle(color: Color(0xFFFBFAF5)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: _hideDeleteButtonsForAllTasks, // Hide delete buttons when tapping outside
+        onTap: _hideDeleteButtonsForAllTasks,
         child: RefreshIndicator(
-          onRefresh: _reloadContent, // Pull-to-refresh callback
+          onRefresh: _reloadContent,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+        // Menu Button at the Top
+        Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 5.0),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: IconButton(
+            icon: Icon(Icons.menu, color: Color(0xFF000033)),
+            onPressed: () {
+              _scaffoldKey.currentState?.openEndDrawer();
+            },
+          ),
+        ),
+      ),
+      // Title Section
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: _titleController,
+                style: GoogleFonts.merriweather(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF000033),
+                ),
+                decoration: InputDecoration(
+                  hintStyle: GoogleFonts.merriweather(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF5C5C7A),
+                  ),
+                  hintText: 'Title',
+                  border: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _title = value;
+                  });
+                },
+              ),
+              Divider(thickness: 2, color: Color(0xFF000033)),
+            ],
+          ),
+        ),
+              // Task List
               Expanded(
                 child: ListView.builder(
                   itemCount: _tasks.length,
@@ -191,24 +284,26 @@ class _HomePageState extends State<HomePage> {
                       hideDeleteButton: _tasks[index].hideDeleteButton,
                       onLongPress: () {
                         setState(() {
-                          _tasks[index].hideDeleteButton = false; // Show delete button
+                          _tasks[index].hideDeleteButton = false;
                         });
                       },
                       onDelete: () => _deleteTask(index),
                       onTextChanged: (newText) => _updateTaskText(index, newText),
                       onToggleEditing: (isEditing) => _toggleEditing(index, isEditing),
-                      onMarkAsCompleted: () => _markTaskAsCompleted(index), // Mark as completed
-                      isChecked: _tasks[index].isChecked, // Pass isChecked state
+                      onMarkAsCompleted: () => _markTaskAsCompleted(index),
+                      isChecked: _tasks[index].isChecked,
                       onCheckedChanged: (bool value) {
                         setState(() {
-                          _tasks[index].isChecked = value; // Update the checkbox state
+                          _tasks[index].isChecked = value;
                         });
                       },
                     );
                   },
                 ),
               ),
-              AddButton(onPressed: _addWidgets), // Use the AddButton widget here
+              AddButton(
+                  onPressed: _addWidgets,
+              ),
             ],
           ),
         ),
@@ -216,4 +311,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

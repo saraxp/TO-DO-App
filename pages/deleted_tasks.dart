@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do_app/pages/task_data.dart';
 
 class DeletedTasksPage extends StatefulWidget {
@@ -6,10 +7,10 @@ class DeletedTasksPage extends StatefulWidget {
   final Function(List<TaskData>) onRestoreTasks; // Callback for restoring tasks
 
   const DeletedTasksPage({
-    Key? key,
+    super.key,
     required this.deletedTasks,
     required this.onRestoreTasks,
-  }) : super(key: key);
+  });
 
   @override
   State<DeletedTasksPage> createState() => _DeletedTasksPageState();
@@ -86,10 +87,17 @@ class _DeletedTasksPageState extends State<DeletedTasksPage> {
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child: Text(
               'Deleted Tasks',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: GoogleFonts.merriweather(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF000033)
+              ),
             ),
           ),
-          Divider(thickness: 1, color: Colors.black54),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Divider(thickness: 1, color: Color(0xFF000033)),
+          ),
           AnimatedContainer(
             duration: Duration(milliseconds: 300),
             height: _isSelectionMode ? 50.0 : 0.0,
@@ -102,22 +110,28 @@ class _DeletedTasksPageState extends State<DeletedTasksPage> {
                   Row(
                     children: [
                       Checkbox(
+                        activeColor: Color(0xFF000033),
+                        checkColor: Color(0xFFF8FAFC),
                         value: _selectAll,
                         onChanged: (_) => _toggleSelectAll(),
                       ),
-                      Text('Select All'),
+                      Text('Select All',
+                        style: GoogleFonts.merriweather(
+                          color: Color(0xFF000033),
+                        ),
+                      ),
                     ],
                   ),
                   Row(
                     children: [
                       IconButton(
                         onPressed: _restoreSelectedTasks,
-                        icon: Icon(Icons.restore, color: Colors.blue),
+                        icon: Icon(Icons.restore, color: Color(0xFF000033)),
                       ),
                       SizedBox(width: 8),
                       IconButton(
                         onPressed: _deleteSelectedTasks,
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon: Icon(Icons.delete, color: Color(0xFF000033)),
                       ),
                     ],
                   ),
@@ -150,6 +164,8 @@ class _DeletedTasksPageState extends State<DeletedTasksPage> {
                             opacity: _isSelectionMode ? 1.0 : 0.0,
                             duration: Duration(milliseconds: 300),
                             child: Checkbox(
+                              activeColor: Color(0xFF000033),
+                              checkColor: Color(0xFFF8FAFC),
                               value: isSelected,
                               onChanged: (_) => _toggleTaskSelection(index),
                             ),
@@ -171,9 +187,9 @@ class _DeletedTasksPageState extends State<DeletedTasksPage> {
                               duration: Duration(milliseconds: 300),
                               curve: Curves.easeInOut,
                               decoration: BoxDecoration(
-                                color: isSelected ? Colors.blue[100] : Colors.white,
+                                color: isSelected ? Color(0xFFD9EAFD) : Colors.white,
                                 borderRadius: BorderRadius.circular(8.0),
-                                border: Border.all(color: Colors.grey.shade300),
+                                border: Border.all(color: Color(0xFF000033)),
                               ),
                               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                               child: Text(

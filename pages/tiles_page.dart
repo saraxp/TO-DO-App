@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Tiles extends StatefulWidget {
   final String taskText; // Text of the task
@@ -55,9 +56,9 @@ class _TilesState extends State<Tiles> {
     return GestureDetector(
       onLongPress: widget.isReadOnly ? null : widget.onLongPress,
       child: Padding(
-        padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+        padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 5.0),
         child: Card(
-          color: Colors.white,
+          color: Color(0xFFF8FAFC),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -66,6 +67,8 @@ class _TilesState extends State<Tiles> {
             leading: widget.isReadOnly
               ? null //no check-box in read-only mode
               : Checkbox(
+                activeColor: Color(0xFF000033),
+                checkColor: Color(0xFFF8FAFC),
                 value: widget.isChecked,
                 onChanged: widget.isReadOnly
                   ? null
@@ -83,7 +86,15 @@ class _TilesState extends State<Tiles> {
                   controller: _textController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
+                    hintStyle: GoogleFonts.merriweather(
+                      color: Colors.black38,
+                      fontWeight: FontWeight.w500,
+                    ),
                     hintText: 'Enter task',
+                  ),
+                  style: GoogleFonts.merriweather(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
                   ),
                   autofocus: true,
                   onChanged: widget.onTextChanged, // Notify parent of changes
@@ -99,7 +110,7 @@ class _TilesState extends State<Tiles> {
                   },
                   child: Text(
                     widget.taskText.isEmpty ? 'New Task' : widget.taskText,
-                    style: TextStyle(
+                    style: GoogleFonts.merriweather(
                       decoration: widget.isChecked && !widget.isReadOnly
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
@@ -111,7 +122,7 @@ class _TilesState extends State<Tiles> {
                 : widget.hideDeleteButton
                     ? null
                     : IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon: Icon(Icons.delete, color: Color(0xFF000033)),
                         onPressed: widget.onDelete,
                     ),
           ),
