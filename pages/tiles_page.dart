@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_app/themes/theme_notifier.dart';
 
 class Tiles extends StatefulWidget {
   final String taskText; // Text of the task
@@ -53,12 +55,14 @@ class _TilesState extends State<Tiles> {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomThemeExtension>()!;
+
     return GestureDetector(
       onLongPress: widget.isReadOnly ? null : widget.onLongPress,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 5.0),
         child: Card(
-          color: Color(0xFFF8FAFC),
+          color: customTheme.tileColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -67,8 +71,9 @@ class _TilesState extends State<Tiles> {
             leading: widget.isReadOnly
               ? null //no check-box in read-only mode
               : Checkbox(
-                activeColor: Color(0xFF000033),
-                checkColor: Color(0xFFF8FAFC),
+              side: BorderSide(color: customTheme.textColor!),
+                activeColor: customTheme.checkboxColor,
+                checkColor: customTheme.checkColor,
                 value: widget.isChecked,
                 onChanged: widget.isReadOnly
                   ? null
@@ -87,13 +92,13 @@ class _TilesState extends State<Tiles> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintStyle: GoogleFonts.merriweather(
-                      color: Colors.black38,
+                      color: customTheme.hintColor,
                       fontWeight: FontWeight.w500,
                     ),
                     hintText: 'Enter task',
                   ),
                   style: GoogleFonts.merriweather(
-                    color: Colors.black,
+                    color: customTheme.textColor,
                     fontWeight: FontWeight.w400,
                   ),
                   autofocus: true,
@@ -109,11 +114,15 @@ class _TilesState extends State<Tiles> {
                     widget.onToggleEditing(true);
                   },
                   child: Text(
-                    widget.taskText.isEmpty ? 'New Task' : widget.taskText,
+                    widget.taskText.isEmpty ? 'Enter Task' : widget.taskText,
                     style: GoogleFonts.merriweather(
+                      color: customTheme.textColor,
                       decoration: widget.isChecked && !widget.isReadOnly
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
+                      decorationColor: widget.isChecked && !widget.isReadOnly
+                          ? Theme.of(context).extension<CustomThemeExtension>()?.divider2Color // Example using a custom color
+                          : Colors.transparent, // Transparent when no line-through
                     ),
                   ),
                 ),
@@ -122,7 +131,7 @@ class _TilesState extends State<Tiles> {
                 : widget.hideDeleteButton
                     ? null
                     : IconButton(
-                        icon: Icon(Icons.delete, color: Color(0xFF000033)),
+                        icon: Icon(Icons.delete, color: customTheme.iconColor),
                         onPressed: widget.onDelete,
                     ),
           ),

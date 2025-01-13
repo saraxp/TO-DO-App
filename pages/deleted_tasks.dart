@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:to_do_app/themes/theme_notifier.dart';
 import 'package:to_do_app/pages/task_data.dart';
 
 class DeletedTasksPage extends StatefulWidget {
@@ -75,10 +76,14 @@ class _DeletedTasksPageState extends State<DeletedTasksPage> {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomThemeExtension>()!;
     return Scaffold(
+      backgroundColor: customTheme.backgroundColor,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: customTheme.iconColor),
         title: null,
         elevation: 0,
+        backgroundColor: Colors.transparent,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,13 +95,13 @@ class _DeletedTasksPageState extends State<DeletedTasksPage> {
               style: GoogleFonts.merriweather(
                   fontSize: 30,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF000033)
+                  color: customTheme.titleColor,
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-            child: Divider(thickness: 1, color: Color(0xFF000033)),
+            child: Divider(thickness: 1, color: customTheme.dividerColor),
           ),
           AnimatedContainer(
             duration: Duration(milliseconds: 300),
@@ -110,14 +115,14 @@ class _DeletedTasksPageState extends State<DeletedTasksPage> {
                   Row(
                     children: [
                       Checkbox(
-                        activeColor: Color(0xFF000033),
-                        checkColor: Color(0xFFF8FAFC),
+                        activeColor: customTheme.checkboxColor,
+                        checkColor: customTheme.checkColor,
                         value: _selectAll,
                         onChanged: (_) => _toggleSelectAll(),
                       ),
                       Text('Select All',
                         style: GoogleFonts.merriweather(
-                          color: Color(0xFF000033),
+                          color: customTheme.textColor,
                         ),
                       ),
                     ],
@@ -126,12 +131,12 @@ class _DeletedTasksPageState extends State<DeletedTasksPage> {
                     children: [
                       IconButton(
                         onPressed: _restoreSelectedTasks,
-                        icon: Icon(Icons.restore, color: Color(0xFF000033)),
+                        icon: Icon(Icons.restore, color: customTheme.iconColor),
                       ),
                       SizedBox(width: 8),
                       IconButton(
                         onPressed: _deleteSelectedTasks,
-                        icon: Icon(Icons.delete, color: Color(0xFF000033)),
+                        icon: Icon(Icons.delete, color: customTheme.iconColor),
                       ),
                     ],
                   ),
@@ -164,8 +169,8 @@ class _DeletedTasksPageState extends State<DeletedTasksPage> {
                             opacity: _isSelectionMode ? 1.0 : 0.0,
                             duration: Duration(milliseconds: 300),
                             child: Checkbox(
-                              activeColor: Color(0xFF000033),
-                              checkColor: Color(0xFFF8FAFC),
+                              activeColor: customTheme.checkboxColor,
+                              checkColor: customTheme.checkColor,
                               value: isSelected,
                               onChanged: (_) => _toggleTaskSelection(index),
                             ),
@@ -187,9 +192,9 @@ class _DeletedTasksPageState extends State<DeletedTasksPage> {
                               duration: Duration(milliseconds: 300),
                               curve: Curves.easeInOut,
                               decoration: BoxDecoration(
-                                color: isSelected ? Color(0xFFD9EAFD) : Colors.white,
+                                color: isSelected ? customTheme.selectionColor: customTheme.tileColor,
                                 borderRadius: BorderRadius.circular(8.0),
-                                border: Border.all(color: Color(0xFF000033)),
+                                border: Border.all(color: customTheme.borderColor!),
                               ),
                               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                               child: Text(

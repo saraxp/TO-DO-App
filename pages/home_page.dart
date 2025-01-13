@@ -3,11 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_app/pages/tiles_page.dart';
 import 'package:to_do_app/pages/add_button.dart';
 import 'package:to_do_app/pages/task_data.dart';
 import 'package:to_do_app/pages/completed_tasks.dart';
 import 'package:to_do_app/pages/deleted_tasks.dart';
+import 'package:to_do_app/themes/theme_notifier.dart';
+import 'package:to_do_app/themes/themes_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -112,23 +115,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).extension<CustomThemeExtension>()!;
+
     return Scaffold(
       key: _scaffoldKey, // Assign the key to the Scaffold
-      backgroundColor: Color(0xFFDDF2FD),
+      backgroundColor: customTheme.backgroundColor,
       endDrawer: Drawer(
-        backgroundColor: Color(0xFF000033),
+        backgroundColor: customTheme.drawerColor,
         child: Padding(
-          padding: const EdgeInsets.only(top: 520.0),
+          padding: const EdgeInsets.only(top: 50.0),
           child: Column(
             children: [
               ListTile(
                 leading: SvgPicture.asset(
                   'lib/icons/list2.svg',
-                  colorFilter: ColorFilter.mode(Color(0xFFFBFAF5), BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(customTheme.icon2Color!, BlendMode.srcIn),
                 ),
                 title: Text(
                   'Completed Tasks',
-                  style: TextStyle(color: Color(0xFFFBFAF5)),
+                  style: TextStyle(color: customTheme.text2Color),
                 ),
                 onTap: () {
                   Navigator.push(
@@ -147,11 +152,11 @@ class _HomePageState extends State<HomePage> {
                 child: ListTile(
                   leading: SvgPicture.asset(
                   'lib/icons/delete2.svg',
-                  colorFilter: ColorFilter.mode(Color(0xFFFBFAF5), BlendMode.srcIn),
+                    colorFilter: ColorFilter.mode(customTheme.icon2Color!, BlendMode.srcIn),
                   ),
                   title: Text(
                     'Deleted Tasks',
-                    style: TextStyle(color: Color(0xFFFBFAF5)),
+                    style: TextStyle(color: customTheme.text2Color),
                   ),
                   onTap: () {
                     Navigator.push(
@@ -181,39 +186,47 @@ class _HomePageState extends State<HomePage> {
                 child: ListTile(
                   leading: SvgPicture.asset(
                       'lib/icons/theme.svg',
-                          colorFilter: ColorFilter.mode(Color(0xFFFBFAF5), BlendMode.srcIn),
+                      colorFilter: ColorFilter.mode(customTheme.icon2Color!, BlendMode.srcIn),
                   ),
                   title: Text(
                     'Themes',
-                    style: TextStyle(color: Color(0xFFFBFAF5)),
+                    style: TextStyle(color: customTheme.text2Color),
                   ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ThemesPage(),
+                      ),
+                    );
+                  },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 10.0),
-                child: Divider(thickness: 1, color: Color(0xFFFBFAF5),),
+                child: Divider(thickness: 1, color: customTheme.divider2Color,),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: ListTile(
                   leading: SvgPicture.asset(
                     'lib/icons/settings.svg',
-                    colorFilter: ColorFilter.mode(Color(0xFFFBFAF5), BlendMode.srcIn),
+                     colorFilter: ColorFilter.mode(customTheme.icon2Color!, BlendMode.srcIn),
                   ),
                   title: Text(
                     'Settings',
-                    style: TextStyle(color: Color(0xFFFBFAF5)),
+                    style: TextStyle(color: customTheme.text2Color),
                   ),
                 ),
               ),
               ListTile(
                 leading: SvgPicture.asset(
                   'lib/icons/account.svg',
-                  colorFilter: ColorFilter.mode(Color(0xFFFBFAF5), BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(customTheme.icon2Color!, BlendMode.srcIn),
                 ),
                 title: Text(
                   'Account',
-                  style: TextStyle(color: Color(0xFFFBFAF5)),
+                  style: TextStyle(color: customTheme.text2Color),
                 ),
               ),
             ],
@@ -234,7 +247,7 @@ class _HomePageState extends State<HomePage> {
         child: Align(
           alignment: Alignment.topRight,
           child: IconButton(
-            icon: Icon(Icons.menu, color: Color(0xFF000033)),
+            icon: Icon(Icons.menu, color: customTheme.iconColor),
             onPressed: () {
               _scaffoldKey.currentState?.openEndDrawer();
             },
@@ -252,13 +265,13 @@ class _HomePageState extends State<HomePage> {
                 style: GoogleFonts.merriweather(
                   fontSize: 40,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF000033),
+                  color: customTheme.titleColor,
                 ),
                 decoration: InputDecoration(
                   hintStyle: GoogleFonts.merriweather(
                     fontSize: 40,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF5C5C7A),
+                    color: customTheme.hintColor,
                   ),
                   hintText: 'Title',
                   border: InputBorder.none,
@@ -269,7 +282,7 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               ),
-              Divider(thickness: 2, color: Color(0xFF000033)),
+              Divider(thickness: 2, color: customTheme.dividerColor),
             ],
           ),
         ),
