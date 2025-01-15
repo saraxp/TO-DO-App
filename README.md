@@ -2,6 +2,7 @@
 This TO-DO App provides users with a simple design that allows them to handle their daily tasks with ease! With an easy-to-use UI, users may-
 * check their tasks to complete them,
 * remove them by long pressing on them,
+* switch through different color themes from the side panel,
 * review their completed and deleted tasks through the side panel and
 * restore or permanently delete tasks that were previously marked as 'completed' or 'deleted'.
 
@@ -19,32 +20,20 @@ alt  height="500px"> <img src= "https://github.com/user-attachments/assets/1cde0
 alt  height="500px"> <img src= "https://github.com/user-attachments/assets/fc9ce119-8347-41ef-9b45-be84837e8ed5"
  alt height="500px">
 
-<em>Home page</em>
+<em>Representation of all features mentioned in the description</em>
 
 <br>
+The app offers captivating colorful themes, such as-
 
-https://github.com/user-attachments/assets/3dd25964-2978-4386-a61a-095f9b76b834
+### Simple Navy (Default)
 
-<em>Add a new task.</em>
-<br>
+<img src="https://github.com/user-attachments/assets/d11a8d0b-7ab2-4375-adeb-0d76227cf85e" alt height="500px"> <img src= "https://github.com/user-attachments/assets/01709d79-353a-4699-a228-a1e6375ab78a" alt height="500px">
 
-https://github.com/user-attachments/assets/2ea095d6-ad4f-4287-a36a-5adbd29b8f7f
+### Brown Gradient
+<img src= "https://github.com/user-attachments/assets/5879c56e-6911-401c-83e4-367c877a66b5" alt height="500px"> <img src= "https://github.com/user-attachments/assets/f9908abd-1f10-43f5-8cab-c4adb2b636b6" alt height="500px">
 
-<em>Complete or delete tasks.</em>
-<br>
+### Pink Perfection
+<img src= "https://github.com/user-attachments/assets/8025d4b4-31b6-45a3-8857-9d8fdf61136e" alt height="500px"> <img src= "https://github.com/user-attachments/assets/fa0da17b-c255-4f07-bbe5-483e55b78cf1" alt height="500px">
 
-https://github.com/user-attachments/assets/9efd2974-089d-4e93-91a2-ae427cb74b0c
-
-<em>View your completed or deleted tasks in the side-panel. Restore any deleted tasks as per your requirement or permanently delete them.</em>
-
-<br>
-
-https://github.com/user-attachments/assets/f478f9fd-bcc5-4282-9d6e-21445e698d26
-
-
-
-https://github.com/user-attachments/assets/57da9214-3898-4375-b0c1-645b57b3da0b
-
-
-
-<em>Refresh the page for a new list. You can refresh it either from the home page or the side-panel.</em>
+### Espresso
+<img src= "https://github.com/user-attachments/assets/90b4a058-b0a5-46da-8797-74848eba672d" alt height="500px"> <img src= "https://github.com/user-attachments/assets/eb59d605-3512-4dc6-bb50-08ef0ccfcf56" alt height="500px">
