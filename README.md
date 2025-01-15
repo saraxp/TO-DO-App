@@ -11,23 +11,13 @@ This code and its implementation are my own, and no one else may use it without 
 ## Preview
 
 <img src="https://github.com/user-attachments/assets/7ade2f00-9004-4384-89fe-8d820f51d3f0"
-alt height="500px"> <img src= "https://github.com/user-attachments/assets/468c771e-dcd9-4efd-b44c-0ef6b995512a"
+alt height="500px"> <img src= "https://github.com/user-attachments/assets/7b1e8453-d1c9-474f-905d-12cd69f0961b"
+ alt height="500px"> <img src= "https://github.com/user-attachments/assets/468c771e-dcd9-4efd-b44c-0ef6b995512a"
+ alt height="500px"> <img src= "https://github.com/user-attachments/assets/34d1979b-3a3d-4928-851c-8eceadaccc63"
+alt  height="500px" > <img src= "https://github.com/user-attachments/assets/f7e21bf2-611e-4821-a53f-a1cd3e2d3bb4"
+alt  height="500px"> <img src= "https://github.com/user-attachments/assets/1cde00d8-991f-4f38-a92e-3293fa5f8681"
+alt  height="500px"> <img src= "https://github.com/user-attachments/assets/fc9ce119-8347-41ef-9b45-be84837e8ed5"
  alt height="500px">
- 
-<img src= "https://github.com/user-attachments/assets/7b1e8453-d1c9-474f-905d-12cd69f0961b"
- alt>
-
-<img src= "https://github.com/user-attachments/assets/34d1979b-3a3d-4928-851c-8eceadaccc63"
-alt>
-
-<img src= "https://github.com/user-attachments/assets/f7e21bf2-611e-4821-a53f-a1cd3e2d3bb4"
-alt>
-
-<img src= "https://github.com/user-attachments/assets/1cde00d8-991f-4f38-a92e-3293fa5f8681"
-alt>
-
-<img src= "https://github.com/user-attachments/assets/fc9ce119-8347-41ef-9b45-be84837e8ed5"
- alt>
 
 <em>Home page</em>
 
